@@ -59,9 +59,11 @@ import { Snackbar } from "@varlet/ui";
 export default {
   setup() {
     let validate = function (form) {
-      if (form.validate()) {
-        router.push("/");
-      }
+      form.validate().then((res) => {
+        if (res) {
+          router.push("/");
+        }
+      });
     };
     let goBack = function () {
       Snackbar({
