@@ -1,39 +1,92 @@
 <template>
   <var-swipe class="swipe" :autoplay="2000">
-    <var-swipe-item>
-      <img class="swipe-item" src="https://varlet.gitee.io/varlet-ui/cat.jpg" />
-    </var-swipe-item>
-    <var-swipe-item>
-      <img
-        class="swipe-item"
-        src="https://varlet.gitee.io/varlet-ui/cat2.jpg"
-      />
-    </var-swipe-item>
-    <var-swipe-item>
-      <img
-        class="swipe-item"
-        src="https://varlet.gitee.io/varlet-ui/cat3.jpg"
-      />
+    <var-swipe-item v-for="item in imgs" :key="item">
+      <img class="swipe-item" :src="item" />
     </var-swipe-item>
   </var-swipe>
-  <var-card
-    title="风景"
-    subtitle="公园里的风景"
-    description="公园的树林也很美。在公园的小山上栽满了树木,梧桐树的叶子随着时间的流逝慢慢变黄,纷纷飘落;枫树的叶子却变红了,公园笼罩在片片红云中,也使秋天增添了一分热情。而柏树的叶子仍是那么青翠欲滴,令你陶醉极了。山上有一群孩子在快乐的嬉戏,不时传来阵阵欢笑声,瞧,他们玩得多起劲呀,给树林增添了活力."
-    src="https://varlet.gitee.io/varlet-ui/cat.jpg"
+  <var-rate
+    v-model="score"
+    :count="8"
+    icon="heart"
+    half-icon="heart-half-full"
+    empty-icon="heart-outline"
+    color="red"
+    half
+  ></var-rate>
+  <var-row :gutter="10" class="row">
+    <var-col :span="8" v-for="img in imgs" :key="img">
+      <div class="var-elevation--12">
+        <img class="swipe-item" :src="img" @click="imagePreview(img)" /></div
+    ></var-col>
+  </var-row>
+  <var-tabs
+    style="position: fixed; bottom: 0; width: 100%"
+    elevation
+    item-direction="vertical"
+    color="#2979ff"
+    active-color="#fff"
+    inactive-color="hsla(0, 0%, 100%, .6)"
+    v-model:active="active"
   >
-    <template #extra> </template>
-  </var-card>
+    <var-tab @click="goList">
+      <var-icon class="icon" name="content-copy" />
+      <div>列表</div>
+    </var-tab>
+    <var-tab @click="goList">
+      <var-icon class="icon" name="account-circle-outline" />
+      <div>我的</div>
+    </var-tab>
+  </var-tabs>
 </template>
-<script></script>
-<style>
+<script>
+import { useRouter } from "vue-router";
+import { ref, reactive, toRefs } from "vue";
+
+import { ImagePreview } from "@varlet/ui";
+
+export default {
+  setup() {
+    let imgs = [
+      "https://varlet.gitee.io/varlet-ui/cat.jpg",
+      "https://varlet.gitee.io/varlet-ui/cat2.jpg",
+      "https://varlet.gitee.io/varlet-ui/cat3.jpg",
+    ];
+    let reaciveImg = reactive({ imgs });
+    let refImgs = toRefs(reaciveImg);
+    let router = useRouter();
+    let active = ref("content-copy");
+    let score = ref(3.5);
+
+    let goList = (active) => {
+      router.push(active ? "/my" : "/list");
+    };
+
+    let imagePreview = (imgUrl) => {
+      ImagePreview({ images: [imgUrl], closeable: true });
+    };
+    return {
+      ...refImgs,
+      active,
+      score,
+      goList,
+      imagePreview,
+    };
+  },
+};
+</script>
+<style scoped>
 .swipe {
-  height: 180px;
+  height: 240px;
 }
 
 .swipe-item {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.row div {
+  height: 120px;
+  text-align: center;
+  line-height: 120px;
 }
 </style>

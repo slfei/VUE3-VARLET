@@ -6,38 +6,38 @@
   </var-list>
 </template>
 <script>
-  import { router } from "@/router";
-  import { ref, reactive } from "vue";
+import { router } from "@/router";
+import { ref, reactive } from "vue";
 
-  export default {
-    setup() {
-      const loading = ref(false);
-      const finished = ref(false);
-      const list = reactive([]);
-      const goDetail = () => {
-        router.push("/");
-      };
-      const load = () => {
-        setTimeout(() => {
-          for (let i = 0; i < 20; i++) {
-            list.push(list.length + 1);
-          }
+export default {
+  setup() {
+    const loading = ref(false);
+    const finished = ref(false);
+    const list = reactive([]);
+    const goDetail = () => {
+      router.push("/");
+    };
+    const load = () => {
+      setTimeout(() => {
+        for (let i = 0; i < 20; i++) {
+          list.push(list.length + 1);
+        }
 
-          loading.value = false;
+        loading.value = false;
 
-          if (list.length >= 60) {
-            finished.value = true;
-          }
-        }, 1000);
-      };
+        if (list.length >= 60) {
+          finished.value = true;
+        }
+      }, 1000);
+    };
 
-      return {
-        list,
-        loading,
-        finished,
-        load,
-        goDetail,
-      };
-    },
-  };
+    return {
+      list,
+      loading,
+      finished,
+      load,
+      goDetail,
+    };
+  },
+};
 </script>
