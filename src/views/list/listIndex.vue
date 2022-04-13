@@ -15,7 +15,7 @@ export default {
     const finished = ref(false);
     const list = reactive([]);
     const goDetail = () => {
-      router.push("/");
+      router.push("/detail");
     };
     const load = () => {
       setTimeout(() => {
